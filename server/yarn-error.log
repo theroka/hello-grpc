@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/robin/.nvm/versions/node/v11.0.0/bin/node /usr/local/Cellar/yarn/1.9.4/libexec/bin/yarn.js add @types/proto-loader -D
+  /Users/robin/.nvm/versions/node/v11.0.0/bin/node /usr/local/Cellar/yarn/1.9.4/libexec/bin/yarn.js add rxjs @types/rxjs -D
 
 PATH: 
   /Users/robin/.rvm/gems/ruby-2.2.7/bin:/Users/robin/.rvm/gems/ruby-2.2.7@global/bin:/Users/robin/.rvm/rubies/ruby-2.2.7/bin:/Users/robin/.nvm/versions/node/v11.0.0/bin:/Users/robin/.cargo/bin:/Users/robin/bin:/usr/local/bin:/usr/local/bin/python3:/Users/robin/.cargo/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/robin/.rvm/bin
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2fproto-loader: Not found
+  Error: https://registry.yarnpkg.com/@types%2frxjs: Not found
       at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.9.4/libexec/lib/cli.js:64202:18)
       at Request.self.callback (/usr/local/Cellar/yarn/1.9.4/libexec/lib/cli.js:137468:22)
       at Request.emit (events.js:182:13)
@@ -36,6 +36,7 @@ npm manifest:
     "private": true,
     "devDependencies": {
       "@grpc/proto-loader": "^0.5.1",
+      "@types/protobufjs": "^6.0.0",
       "grpc": "^1.22.2",
       "gulp": "^4.0.2",
       "gulp-cli": "^2.2.0",
@@ -118,6 +119,12 @@ Lockfile:
   "@types/node@^10.1.0":
     version "10.14.13"
     resolved "https://registry.yarnpkg.com/@types/node/-/node-10.14.13.tgz#ac786d623860adf39a3f51d629480aacd6a6eec7"
+  
+  "@types/protobufjs@^6.0.0":
+    version "6.0.0"
+    resolved "https://registry.yarnpkg.com/@types/protobufjs/-/protobufjs-6.0.0.tgz#aeabb43f9507bb19c8adfb479584c151082353e4"
+    dependencies:
+      protobufjs "*"
   
   abbrev@1:
     version "1.1.1"
@@ -1771,16 +1778,7 @@ Lockfile:
     version "2.0.1"
     resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
   
-  protobufjs@^5.0.3:
-    version "5.0.3"
-    resolved "https://registry.yarnpkg.com/protobufjs/-/protobufjs-5.0.3.tgz#e4dfe9fb67c90b2630d15868249bcc4961467a17"
-    dependencies:
-      ascli "~1"
-      bytebuffer "~5"
-      glob "^7.0.5"
-      yargs "^3.10.0"
-  
-  protobufjs@^6.8.6:
+  protobufjs@*, protobufjs@^6.8.6:
     version "6.8.8"
     resolved "https://registry.yarnpkg.com/protobufjs/-/protobufjs-6.8.8.tgz#c8b4f1282fd7a90e6f5b109ed11c84af82908e7c"
     dependencies:
@@ -1797,6 +1795,15 @@ Lockfile:
       "@types/long" "^4.0.0"
       "@types/node" "^10.1.0"
       long "^4.0.0"
+  
+  protobufjs@^5.0.3:
+    version "5.0.3"
+    resolved "https://registry.yarnpkg.com/protobufjs/-/protobufjs-5.0.3.tgz#e4dfe9fb67c90b2630d15868249bcc4961467a17"
+    dependencies:
+      ascli "~1"
+      bytebuffer "~5"
+      glob "^7.0.5"
+      yargs "^3.10.0"
   
   pump@^2.0.0:
     version "2.0.1"

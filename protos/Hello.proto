@@ -1,7 +1,11 @@
 syntax = "proto3";
 
+package HelloPackage;
+
 service Hello {
   rpc sayHello (HelloRequest) returns (HelloReply) {}
+  rpc getGreetings (Empty) returns (stream Greeting) {}
+  rpc sayHellos (stream HelloRequest) returns (Hellos) {}
 }
 
 message HelloRequest {
@@ -10,4 +14,14 @@ message HelloRequest {
 
 message HelloReply {
   string message = 1;
+}
+
+message Hellos {
+  repeated HelloRequest hellos = 1;
+}
+
+message Empty {}
+
+message Greeting {
+  string title = 1;
 }
