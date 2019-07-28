@@ -1,0 +1,16 @@
+{
+  "name": "hello-grpc",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "author": "theroka <rokatron.rk@gmail.com>",
+  "license": "GPL3",
+  "private": true,
+  "devDependencies": {
+    "grpc": "^1.22.2",
+    "grpc-caller": "^0.13.0",
+    "gulp": "^4.0.2",
+    "gulp-cli": "^2.2.0",
+    "gulp-typescript": "^5.0.1",
+    "typescript": "^3.6.0-dev.20190727"
+  }
+}
