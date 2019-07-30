@@ -1,25 +1,64 @@
 import caller from "grpc-caller";
 
-const client = caller("localhost:50001", __dirname + "/Hello.proto", "Hello");
-
-console.log("Send sayHello from client");
-client.sayHello({ name: "Robin" }, (err: Error, res: Response) => {
-  console.log("Client received", err || res);
-});
-
-const call = client.getGreetings();
-call.on("data", (d: any) => console.log(d));
-call.on("end", () => console.log("all data received."));
-
-
-function sayHellos() {
-  const { call, res } = client.sayHellos();
-  res.then((res: any) => console.log("foob", res)).catch((err: Error) => console.error(err));
-
-  call.write({ name: "robin"})
-  call.write({ name: "flo"})
-  call.write({ name: "thomas"})
-  call.end()
+interface IBook {
+  title: string;
+  author: string;
 }
 
-sayHellos();
+const books = caller("localhost:50001", __dirname + "/Books.proto", "Books");
+
+function getAllBooks() {
+  const call = books.getAll();
+  call.on("data", (d: any) => console.log("get book", d));
+  call.on("end", () => console.log("all books received."));
+}
+
+function getBooksByAuthor(author: string) {
+  const call = books.getByAuthor({ author });
+  call.on("data", (d: any) => console.log("get book by author", d));
+  call.on("end", () => console.log("books by author received."));
+}
+
+function getBooksByTitle(title: string) {
+  const call = books.getByTitle({ title });
+  call.on("data", (d: any) => console.log("get book by title", d));
+  call.on("end", () => console.log("books by title received."));
+}
+
+function addBooks(newBooks: Array<IBook>) {
+  const { call, res } = books.addBooks();
+  res
+    .then((res: any) => console.log("added books", res))
+    .catch((err: Error) => console.error(err));
+  newBooks.forEach(({ title, author }: IBook) => call.write({ title, author }));
+  call.end();
+}
+
+function deleteBooks(deleteBooks: Array<IBook>) {
+  const { call, res } = books.deleteBooks();
+  res
+    .then((res: any) => console.log("deleted books", res))
+    .catch((err: Error) => console.error(err));
+  deleteBooks.forEach(({ title, author }: IBook) =>
+    call.write({ title, author })
+  );
+  call.end();
+}
+
+// getAllBooks();
+
+// getBooksByAuthor("Leo Tolstoy");
+// getBooksByTitle("Hamlet");
+
+// addBooks([
+//   { title: "foo", author: "Robin" },
+//   { title: "bar", author: "Robin" }
+// ]);
+
+// getBooksByAuthor("Robin");
+
+deleteBooks([{ title: "War and Peace", author: "Leo Tolstoy" }]);
+getBooksByAuthor("Leo Tolstoy");
+// setTimeout(() => getBooksByAuthor("Leo Tolstoy"), 5000);
+
+// getAllBooks();

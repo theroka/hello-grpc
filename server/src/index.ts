@@ -1,41 +1,24 @@
 import Mali from "mali";
-import intoStream from "into-stream";
+import * as yargs from "yargs";
+import { getAll, getByTitle, getByAuthor, addBooks, deleteBooks } from "./books";
 
-// greetings array works as database, temporary solution
-const greetings = ["hello", "hi", "by", "cya"];
+const DEFAULT_PORT = 50001;
 
-async function sayHello(ctx: any) {
-  console.log("Server received sayHello", ctx.req);
-  ctx.res = { message: `Hello ${ctx.req.name}!` };
-}
+const args = yargs
+  .option("port", {
+    alias: "p",
+    description: "Port the server should run at.",
+    default: DEFAULT_PORT
+  })
+  .option("protoDir", {
+    alias: "d",
+    description: "Base dir of protobuf files.",
+    demand: true,
+    default: __dirname
+  }).argv;
 
-// @see: https://github.com/malijs/mali/issues/85#issuecomment-479572232
-async function getGreetings(ctx: any) {
-  let src = greetings.map(title => ({ title }));
-  ctx.res = intoStream.object(src);
-}
+const app = new Mali(args.protoDir + "/Books.proto");
+app.use({ getAll, getByTitle, getByAuthor, addBooks, deleteBooks });
+app.start(`localhost:${args.port}`);
 
-async function doWork(inputStream: any) {
-  let messages: Array<{ message: string }> = [];
-  return new Promise((resolve, reject) => {
-    inputStream.on("data", (d: any) => {
-      console.log("inputStream get data", messages);
-      messages.push(d);
-    });
-
-    inputStream.on("end", () => {
-      console.log("inputStream ended", messages);
-      resolve({ hellos: messages });
-    });
-  });
-}
-
-async function sayHellos(ctx: any) {
-  ctx.res = await doWork(ctx.req);
-}
-
-const app = new Mali(__dirname + "/Hello.proto");
-app.use({ sayHello, getGreetings, sayHellos });
-app.start("localhost:50001");
-
-console.log("Server ready at localhost:50001...");
+console.log(`Server ready at localhost:${args.port}...`);
